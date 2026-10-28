@@ -1,11 +1,14 @@
 # GeoAgent: Agentic Earth Observation & Climate Intelligence Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-geoagent.rafiqflow.com-success.svg)](https://geoagent.rafiqflow.com)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![LangGraph](https://img.shields.io/badge/Agent-LangGraph%20StateGraph-orange.svg)](https://github.com/langchain-ai/langgraph)
 [![GEE](https://img.shields.io/badge/Engine-Google%20Earth%20Engine-green.svg)](https://earthengine.google.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 GeoAgent is an **agentic GIS platform** connecting human natural-language intentions with planetary Earth Observation data processing. Built on a compiled **LangGraph `StateGraph`** agent, GeoAgent orchestrates Google Earth Engine (GEE), OpenStreetMap Nominatim, and USGS Landsat 8/9 thermal radiative physics while mitigating spatial hallucinations through deterministic boundary grounding.
+
+> 🌐 **Live Demo:** Try GeoAgent live at [https://geoagent.rafiqflow.com](https://geoagent.rafiqflow.com)
 
 ---
 
