@@ -1,0 +1,17 @@
+services:
+  geoagent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geoagent-app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8088}:8088"
+    env_file:
+      - .env
+    environment:
+      - PORT=8088
+      - HOST=0.0.0.0
+    volumes:
+      # Optional: Mount local Earth Engine credentials for local container development
+      - ~/.config/earthengine:/root/.config/earthengine:ro

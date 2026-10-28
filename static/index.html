@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoAgent — Autonomous Earth Observation & Spatial Intelligence</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Chat Panel -->
+        <aside class="sidebar">
+            <header class="sidebar-header">
+                <div class="logo-group">
+                    <div class="logo-icon">🌍</div>
+                    <div>
+                        <h1 class="logo-title">GeoAgent</h1>
+                        <p class="logo-subtitle">Autonomous Earth Observation & Thermal Intelligence</p>
+                    </div>
+                </div>
+                <div class="badge-row">
+                    <span class="badge badge-accent">Autonomous Agent</span>
+                    <span class="badge badge-subtle">Satellite EO</span>
+                    <span class="badge badge-subtle">Thermal GIS</span>
+                </div>
+            </header>
+
+            <!-- Conversation Feed (Takes Maximum Space) -->
+            <div class="chat-feed" id="chatFeed">
+                <div class="message message-agent">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p><strong>Hello! I am GeoAgent.</strong></p>
+                        <p>I autonomously translate conversational spatial goals into planetary Earth Observation pipelines (Landsat 8/9, Sentinel, and OpenStreetMap).</p>
+                        <p>Ask a question or click a suggestion below to begin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Suggestion Chips (Compact above Input) -->
+            <div class="chips-container">
+                <div class="chips-label">SUGGESTIONS:</div>
+                <div class="chips-scroll" id="presetButtons">
+                    <!-- Dynamic chips -->
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <footer class="chat-input-area">
+                <form id="chatForm" class="chat-form">
+                    <input type="text" id="chatInput" placeholder="Ask to analyze surface temperature, heat islands, or regions..." autocomplete="off">
+                    <button type="submit" id="sendBtn" class="btn-send" title="Send query">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </form>
+                <div class="input-hint">Deterministic spatial physics • Cloud satellite analytics</div>
+            </footer>
+        </aside>
+
+        <!-- Main Map Area -->
+        <main class="map-container">
+            <div id="map"></div>
+
+            <!-- Floating Top HUD: Status & Active Target -->
+            <div class="map-hud-top" id="mapHudTop">
+                <div class="hud-item">
+                    <span class="hud-indicator active"></span>
+                    <span id="hudTargetText">Satellite Thermal Observation Canvas</span>
+                </div>
+                <div class="hud-item hud-meta" id="hudMetaText">
+                    Ready for spatial instructions
+                </div>
+            </div>
+
+            <!-- Floating Thermal Legend & Stats Panel -->
+            <div class="thermal-legend-card" id="legendCard" style="display: none;">
+                <div class="legend-header">
+                    <span class="legend-title">Land Surface Temperature (LST)</span>
+                    <span class="legend-badge" id="legendModeBadge">Landsat 8 TIRS</span>
+                </div>
+                <div class="color-ramp-container">
+                    <div class="color-ramp"></div>
+                    <div class="ramp-labels">
+                        <span id="lblMinTemp">20°C (Cool)</span>
+                        <span id="lblMeanTemp">28°C (Mean)</span>
+                        <span id="lblMaxTemp">35°C (Extreme)</span>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">Min LST</span>
+                        <span class="stat-value" id="valMinLST">--</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Mean LST</span>
+                        <span class="stat-value" id="valMeanLST">--</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Peak Hotspot</span>
+                        <span class="stat-value highlight-red" id="valMaxLST">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Analytics Slide Panel (Spatiotemporal Timeseries) -->
+            <aside class="analytics-slide-panel" id="analyticsSlidePanel">
+                <div class="slide-panel-header">
+                    <div class="panel-header-title">
+                        <span class="panel-icon">📈</span>
+                        <div>
+                            <h2 class="panel-title" id="panelChartTitle">Spatiotemporal Thermal Trend</h2>
+                            <p class="panel-subtitle" id="panelChartSubtitle">Cloud-Screened Landsat 8/9 Satellite Overpasses</p>
+                        </div>
+                    </div>
+                    <button class="panel-close-btn" id="closeSlidePanelBtn" title="Close Panel">✕</button>
+                </div>
+
+                <div class="slide-panel-body">
+                    <!-- Key Trend Summary Metrics -->
+                    <div class="trend-metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">Estimated Warming Rate</span>
+                            <span class="metric-value highlight-orange" id="valWarmingRate">--</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Net Delta</span>
+                            <span class="metric-value" id="valNetDelta">--</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Observation Window</span>
+                            <span class="metric-value" id="valTimeWindow">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Chart Canvas Container -->
+                    <div class="chart-wrapper">
+                        <canvas id="timeseriesChart"></canvas>
+                    </div>
+
+                    <!-- Methodological Citation Card -->
+                    <div class="methodology-card">
+                        <div class="methodology-title">🔬 Radiative Transfer Methodology</div>
+                        <p class="methodology-text" id="methodologyCitation">
+                            Methodology directly adheres to ITB Bachelor Thesis research (Rafiq Naufal Shidiq, 2020),
+                            processing USGS Landsat 8/9 TIRS Band 10 single-channel radiative transfer equation calibrated with dynamic NDVI vegetation emissivity.
+                        </p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="app.js"></script>
+</body>
+</html>
